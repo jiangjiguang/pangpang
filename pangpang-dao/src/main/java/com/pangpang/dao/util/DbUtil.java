@@ -1,9 +1,5 @@
 package com.pangpang.dao.util;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.lang.reflect.Field;
 import java.sql.CallableStatement;
 import java.util.HashMap;
@@ -14,7 +10,7 @@ import java.util.Map;
  * Created by jiangjg on 2016/6/17.
  */
 public class DbUtil {
-    private static Logger logger = LoggerFactory.getLogger(DbUtil.class);
+    //private static Logger logger = LoggerFactory.getLogger(DbUtil.class);
 
     public <TEntity> void setEntityValue(TEntity daoPojo, CallableStatement cstmt, List<ParameterMetaData> parameterMetaDatas, Map<String, String> columnName2FieldName){
         for(int i=0; i < parameterMetaDatas.size(); i++) {
@@ -27,7 +23,7 @@ public class DbUtil {
                     field.setAccessible(true);
                     field.set(daoPojo, object);
                 }catch (Exception ex){
-                    logger.warn("设置属性值异常：" +  ExceptionUtils.getFullStackTrace(ex));
+                   // logger.warn("设置属性值异常：" +  ExceptionUtils.getFullStackTrace(ex));
                 }
             }
         }
@@ -45,7 +41,7 @@ public class DbUtil {
                     field.setAccessible(true);
                     object = field.get(daoPojo);
                 }catch (Exception ex){
-                    logger.warn("类属性不存在：" +  ExceptionUtils.getFullStackTrace(ex));
+                   // logger.warn("类属性不存在：" +  ExceptionUtils.getFullStackTrace(ex));
                 }
                 map.put(i, object);
             }
@@ -72,7 +68,7 @@ public class DbUtil {
             }
             sb.append(")}");
         }catch (Exception ex){
-            logger.error("获取存储过程SQL异常：" + ExceptionUtils.getFullStackTrace(ex));
+           // logger.error("获取存储过程SQL异常：" + ExceptionUtils.getFullStackTrace(ex));
             return null;
         }
         return sb.toString();
