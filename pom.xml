@@ -4,15 +4,17 @@
     <groupId>pangpang</groupId>
     <artifactId>pangpang</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
     <modules>
         <module>pangpang-util</module>
         <module>pangpang-dao</module>
+        <module>pangpang-springrest</module>
     </modules>
     <name>pangpang Maven Webapp</name>
     <url>http://maven.apache.org</url>
 
     <properties>
+        <pangpang-version>0.0.1-SNAPSHOT</pangpang-version>
         <spring-verison>4.2.5.RELEASE</spring-verison>
         <hibernate-version>5.0.0.Final</hibernate-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -36,6 +38,22 @@
 
     <dependencyManagement>
         <dependencies>
+            <!--pangpang-->
+            <dependency>
+                <groupId>pangpang</groupId>
+                <artifactId>pangpang-dao</artifactId>
+                <version>${pangpang-verison}</version>
+            </dependency>
+            <dependency>
+                <groupId>pangpang</groupId>
+                <artifactId>pangpang-util</artifactId>
+                <version>${pangpang-verison}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring-verison}</version>
+            </dependency>
             <!--spring-->
             <dependency>
                 <groupId>org.springframework</groupId>
