@@ -1,12 +1,10 @@
 package com.pangpang.dao.yixindb.operation;
 
-import com.ctrip.infosec.sars.util.db.SqlColumn;
-import com.ctrip.infosec.sars.util.db.SqlTable;
 import com.google.common.collect.Maps;
+import com.pangpang.dao.yixindb.SqlColumn;
+import com.pangpang.dao.yixindb.SqlTable;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -18,7 +16,6 @@ import java.util.Map;
  * Created by yxjiang on 2016/2/25.
  */
 public class MysqlOperation extends AbstSqlOperation {
-    private static final Logger logger = LoggerFactory.getLogger(MysqlOperation.class);
 
     private DataSource dataSource;
 
@@ -92,14 +89,11 @@ public class MysqlOperation extends AbstSqlOperation {
         Map<String, Object> dbData = toDbData(table, updateData);
         Map<String, Object> dbQueryData = toDbData(table, queryData);
         if (MapUtils.isEmpty(dbData)) {
-            logger.warn("no data, ignore update table {}", table.getName());
             return 0;
         } else if (MapUtils.isEmpty(dbQueryData)) {
-            logger.warn("no query data, ignore update table {}", table.getName());
             return 0;
         } else  {
             String sql = createUpdateSql(table, dbData, dbQueryData);
-            logger.debug("update sql statement: {}", sql);
             try (Connection connection = dataSource.getConnection()) {
                 try (PreparedStatement ps = connection.prepareStatement(sql)) {
                     prepareUpdate(ps, table, dbData, dbQueryData);
@@ -115,11 +109,9 @@ public class MysqlOperation extends AbstSqlOperation {
         try (Connection connection = dataSource.getConnection()) {
             Map<String, Object> dbData = toDbData(table, data);
             if (MapUtils.isEmpty(dbData)) {
-                logger.warn("no data, ignore insert table {}", table.getName());
                 return null;
             } else {
                 String sql = createInsertSql(table, dbData);
-                logger.debug("insert sql statement: {}", sql);
                 try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                     prepareInsert(table, ps, dbData);
                     doExecuteUpdate(ps, 2);
@@ -201,7 +193,6 @@ public class MysqlOperation extends AbstSqlOperation {
             if (retryTimes < 1) {
                 throw e;
             } else {
-                logger.warn("execute failed[exception = {}], retry...", e.toString());
                 return doExecuteUpdate(ps, retryTimes - 1);
             }
         }

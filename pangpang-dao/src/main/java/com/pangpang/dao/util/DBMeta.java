@@ -31,6 +31,7 @@ public class DBMeta {
         List<String> fullSPName = new ArrayList();
         try{
             resultSet = connection.getMetaData().getProcedures(null, null, spName);
+            System.out.println(resultSet.getRow());
             while(resultSet.next()) {
                 fullSPName.add(resultSet.getString("PROCEDURE_CAT") + "." + resultSet.getString("PROCEDURE_SCHEM") + "." + resultSet.getString("PROCEDURE_NAME"));
             }
@@ -62,6 +63,7 @@ public class DBMeta {
             if(!parameterMetaDataListMap.containsKey(fullName)){
                 List<ParameterMetaData> parameterMetaDataList = new ArrayList<>();
                 resultSet =  connection.getMetaData().getProcedureColumns(null, null, spName, null);
+                System.out.println(resultSet.getRow());
                 while(resultSet.next()) {
                     String columnName = resultSet.getString("COLUMN_NAME");
                     int columnType = resultSet.getInt("COLUMN_TYPE");

@@ -22,6 +22,9 @@ public class StudentDaoTest {
     @Test
     public void countTest() throws SQLException {
         System.out.println(studentDao.count());
+        Student student = studentDao.queryByPk(1);
+        studentDao.insert(student);
+
     }
 
 }

@@ -9,7 +9,5 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class StudentDao extends PangpangdbBase<Student, Number> {
-        public StudentDao(){
-            System.out.println("init StudentDao");
-        }
+
 }

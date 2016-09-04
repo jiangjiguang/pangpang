@@ -25,6 +25,15 @@
               <property name="maxPoolSize" value="${jdbc.maxPoolSize}"></property>
        </bean>
 
+       <bean id="pangpangCodeGeneratorDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+              <property name="user" value="${jdbc.user}"></property>
+              <property name="password" value="${jdbc.password}"></property>
+              <property name="driverClass" value="${jdbc.driverClass}"></property>
+              <property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>
+              <property name="initialPoolSize" value="${jdbc.initialPoolSize}"></property>
+              <property name="maxPoolSize" value="${jdbc.maxPoolSize}"></property>
+       </bean>
+
        <!--配置spring 的JdbcTemplate
        <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
               <property name="dataSource" ref="pangpangdbDataSource"></property>
