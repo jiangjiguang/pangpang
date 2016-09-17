@@ -1,6 +1,8 @@
 package com.pangpang.dao.codegenerator;
 
 import com.pangpang.util.FileUtil;
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -8,12 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Entity;
 import javax.sql.DataSource;
+import javax.validation.constraints.Null;
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Types;
+import java.util.*;
 
 
 /**
@@ -22,6 +29,31 @@ import java.util.List;
 @Service
 public class PangpangCodeGenerator {
     Logger logger = Logger.getLogger(PangpangCodeGenerator.class);
+
+    //所有的类型
+    private static Map<Integer, String> typeMap  = null;
+    static{
+        if(typeMap == null){
+            typeMap = new HashMap<>();
+
+            typeMap.put(Types.INTEGER, "Integer");
+            typeMap.put(Types.BIGINT, "Long");
+            typeMap.put(Types.BIT, "Boolean");
+            typeMap.put(Types.CHAR, "String");
+            typeMap.put(Types.DATE, "Timestamp");
+            typeMap.put(Types.DECIMAL, "BigDecimal");
+            typeMap.put(Types.DOUBLE, "BigDecimal");
+            typeMap.put(Types.FLOAT, "BigDecimal");
+            typeMap.put(Types.NCHAR, "String");
+            typeMap.put(Types.NVARCHAR, "String");
+            typeMap.put(Types.VARCHAR, "String");
+            typeMap.put(Types.TIME, "Timestamp");
+            typeMap.put(Types.TIMESTAMP, "Timestamp");
+            typeMap.put(Types.TINYINT, "Byte");
+        }
+    }
+
+
     private DataSource dataSource;
 
     @Autowired
@@ -51,8 +83,44 @@ public class PangpangCodeGenerator {
         FileUtil.createFile(daoPath, "r");
 
         List<SqlColumn> sqlColumnList =  getSqlColumnsInfo(tableName);
+        List<String> contentList = new ArrayList<>();
+        contentList.add("@Entity");
+        contentList.add(String.format("@Table(name=\"%s\")", tableName));
+        contentList.add(String.format("public class %s {", tableName));
 
-        logger.info("123456");
+        //shuxing
+        if(sqlColumnList != null && sqlColumnList.size() > 0){
+            for(SqlColumn item : sqlColumnList){
+                contentList.add(String.format("%sprivate%s%s%s%s;",BLANK_4, BLANK_1,
+                        MapUtils.getString(typeMap, item.getType(), "String"),BLANK_1,  item.getName()));
+            }
+        }
+
+        /*
+     public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+         */
+
+        if(sqlColumnList != null && sqlColumnList.size() > 0){
+            for(SqlColumn item : sqlColumnList){
+                contentList.add(String.format("%sprivate%s%s%s%s;",BLANK_4, BLANK_1,
+                        MapUtils.getString(typeMap, item.getType(), "String"),BLANK_1,  item.getName()));
+            }
+        }
+
+        contentList.add("}");
+
+
+        try {
+            FileUtils.writeLines(new File(entityPath), contentList, true);
+        } catch (Exception ex) {
+            logger.error(ExceptionUtils.getFullStackTrace(ex));
+        }
 
 
 
@@ -100,15 +168,16 @@ public class PangpangCodeGenerator {
             resultSet = databaseMetaData.getColumns(null, null, tableName, null);
             while (resultSet.next()) {
                 SqlColumn sqlColumn = new SqlColumn();
-                //int jdbcType = resultSet.getInt("DATA_TYPE");
-                //String TYPE_NAME = resultSet.getString("TYPE_NAME");
+                int jdbcType = resultSet.getInt("DATA_TYPE");
                 String columnName = resultSet.getString("COLUMN_NAME");
                 String isAutoincrement = resultSet.getString("IS_AUTOINCREMENT");
-                sqlColumn.setName(columnName);
                 boolean autoincrement = false;
                 if(!StringUtils.isBlank((isAutoincrement)) && isAutoincrement.equals("YES")){
                     autoincrement = true;
                 }
+
+                sqlColumn.setType(jdbcType);
+                sqlColumn.setName(columnName);
                 sqlColumn.setAutoIncrement(autoincrement);
                 sqlColumnList.add(sqlColumn);
             }

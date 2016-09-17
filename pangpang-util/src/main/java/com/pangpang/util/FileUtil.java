@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by root on 16-9-11.
@@ -12,6 +13,8 @@ public class FileUtil {
     public static void main(String[] args) {
 
     }
+
+
     public static boolean createFile(String path, String flag) {
         if (StringUtils.isBlank(path)) {
             return false;
