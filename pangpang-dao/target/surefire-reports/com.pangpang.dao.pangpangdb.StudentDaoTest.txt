@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.pangpang.dao.pangpangdb.StudentDaoTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.412 sec

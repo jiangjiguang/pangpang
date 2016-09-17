@@ -1,7 +1,9 @@
 package com.pangpang.dao.codegenerator;
 
-import com.pangpang.dao.yixindb.*;
+import com.pangpang.util.FileUtil;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -10,18 +12,17 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Created by root on 16-6-26.
  */
 @Service
 public class PangpangCodeGenerator {
-
+    Logger logger = Logger.getLogger(PangpangCodeGenerator.class);
     private DataSource dataSource;
-//http://www.cnblogs.com/hongten/archive/2013/02/24/hongten_code_create.html
 
     @Autowired
     @Qualifier("pangpangCodeGeneratorDataSource")
@@ -33,42 +34,108 @@ public class PangpangCodeGenerator {
         return dataSource;
     }
 
-    private void getPrimaryKeys(String tableName) throws Exception {
-        List<SqlColumn> sqlColumnList = new ArrayList<>();
+    private static final String RT_1 = "\r\n";
+    private static final String RT_2 = RT_1+RT_1;
+    private static final String BLANK_1 =" ";
+    private static final String BLANK_4 ="    ";
+    private static final String BLANK_8 =BLANK_4 + BLANK_4;
 
-        DatabaseMetaData databaseMetaData = dataSource.getConnection().getMetaData();
-        ResultSet resultSet = databaseMetaData.getPrimaryKeys(null, null, tableName);
-        while (resultSet.next()) {
-            String columnName = resultSet.getString("COLUMN_NAME");
-            System.out.println(columnName);
+
+    public void generate(String tableName, String pathDir){
+        if(!StringUtils.isBlank(pathDir) && !pathDir.endsWith("/")){
+            pathDir += "/";
         }
+        String entityPath = pathDir + "/" + tableName + ".java";
+        String daoPath = pathDir + "/" + tableName + "Dao.java";
+        FileUtil.createFile(entityPath, "r");
+        FileUtil.createFile(daoPath, "r");
+
+        List<SqlColumn> sqlColumnList =  getSqlColumnsInfo(tableName);
+
+        logger.info("123456");
+
+
+
     }
 
-    public  void getSqlColumn(String tableName) throws Exception {
-        List<SqlColumn> sqlColumnList = new ArrayList<>();
+
+    //获取表的主键信息
+    private List<String> getPrimaryKeys(String tableName) {
+        List<String> primaryKeyList = new ArrayList<>();
+        Connection connection = null;
+        ResultSet resultSet = null;
         try{
-            Connection connection = dataSource.getConnection();
+            connection = dataSource.getConnection();
             DatabaseMetaData databaseMetaData = connection.getMetaData();
-            ResultSet resultSet = databaseMetaData.getColumns(null, null, tableName, null);
+            resultSet = databaseMetaData.getPrimaryKeys(null, null, tableName);
             while (resultSet.next()) {
-                int jdbcType = resultSet.getInt("DATA_TYPE");
-                String TYPE_NAME = resultSet.getString("TYPE_NAME");
                 String columnName = resultSet.getString("COLUMN_NAME");
-                String isAutoincrement = resultSet.getString("IS_AUTOINCREMENT");
-                final com.pangpang.dao.yixindb.SqlColumn col = new com.pangpang.dao.yixindb.SqlColumn(columnName, jdbcType, StringUtils.equals(isAutoincrement, "YES"));
-                System.out.println("----------------");
-                System.out.println(TYPE_NAME);
-                System.out.println(jdbcType);
-                System.out.println(columnName);
-                System.out.println(isAutoincrement);
-                System.out.println(col);
+                primaryKeyList.add(columnName);
             }
         }catch (Exception ex){
-
+            logger.error(ExceptionUtils.getFullStackTrace(ex));
         }finally {
+            try{
+                if(resultSet != null && !resultSet.isClosed() ){
+                    resultSet.close();
+                }
+                if(connection != null && !connection.isClosed()){
+                    connection.close();
+                }
+            }catch (Exception ex){
+                logger.error(ExceptionUtils.getFullStackTrace(ex));
+            }
+        }
+        return primaryKeyList;
+    }
 
+    //获取表的列信息
+    public  List<SqlColumn> getSqlColumnsInfo(String tableName){
+        List<SqlColumn> sqlColumnList = new ArrayList<>();
+        Connection connection = null;
+        ResultSet resultSet = null;
+        try{
+            connection = dataSource.getConnection();
+            DatabaseMetaData databaseMetaData = connection.getMetaData();
+            resultSet = databaseMetaData.getColumns(null, null, tableName, null);
+            while (resultSet.next()) {
+                SqlColumn sqlColumn = new SqlColumn();
+                //int jdbcType = resultSet.getInt("DATA_TYPE");
+                //String TYPE_NAME = resultSet.getString("TYPE_NAME");
+                String columnName = resultSet.getString("COLUMN_NAME");
+                String isAutoincrement = resultSet.getString("IS_AUTOINCREMENT");
+                sqlColumn.setName(columnName);
+                boolean autoincrement = false;
+                if(!StringUtils.isBlank((isAutoincrement)) && isAutoincrement.equals("YES")){
+                    autoincrement = true;
+                }
+                sqlColumn.setAutoIncrement(autoincrement);
+                sqlColumnList.add(sqlColumn);
+            }
+        }catch (Exception ex){
+            logger.error(ExceptionUtils.getFullStackTrace(ex));
+        }finally {
+            try {
+                if(resultSet != null && !resultSet.isClosed() ){
+                    resultSet.close();
+                }
+                if(connection != null && !connection.isClosed()){
+                    connection.close();
+                }
+            }catch (Exception ex){
+                logger.error(ExceptionUtils.getFullStackTrace(ex));
+            }
         }
 
+        List<String> primaryKeyList = getPrimaryKeys(tableName);
+        for(SqlColumn sqlColumn : sqlColumnList){
+            if(primaryKeyList.contains(sqlColumn.getName())){
+                sqlColumn.setPrimaryKey(true);
+            }else{
+                sqlColumn.setPrimaryKey(false);
+            }
+        }
+        return sqlColumnList;
     }
 
     

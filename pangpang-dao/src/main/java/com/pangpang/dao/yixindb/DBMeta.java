@@ -5,7 +5,6 @@ import com.pangpang.dao.yixindb.operation.MysqlOperation;
 import com.pangpang.dao.yixindb.operation.SqlOperation;
 import com.pangpang.dao.yixindb.operation.SqlServerOperation;
 import org.apache.commons.lang3.time.DateUtils;
-import org.springframework.util.Assert;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -31,7 +30,6 @@ public class DBMeta {
         try (Connection connection = dataSource.getConnection()) {
             String databaseProductName = connection.getMetaData().getDatabaseProductName();
             DBMS dbms = DBMS.byProductName(databaseProductName);
-            Assert.notNull(dbms, "未能找到数据库产品名" + databaseProductName + "对应的DBMS枚举。");
             switch (dbms) {
                 case SQL_SERVER:
                     sqlOperation = new SqlServerOperation(dataSource);
@@ -40,7 +38,6 @@ public class DBMeta {
                     sqlOperation = new MysqlOperation(dataSource);
                     break;
             }
-            Assert.notNull(sqlOperation, databaseProductName + "的sqlOperation没有实现。");
         }
         tables = sqlOperation.getTables(null);
     }

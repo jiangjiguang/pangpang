@@ -163,7 +163,6 @@ public abstract class AbstractMySQLBaseDao<TEntity, ID extends Serializable> ext
             if (list != null && !list.isEmpty())
                 return list.get(0);
         } catch (Exception exception) {
-
             throw exception;
         }
         return entity;

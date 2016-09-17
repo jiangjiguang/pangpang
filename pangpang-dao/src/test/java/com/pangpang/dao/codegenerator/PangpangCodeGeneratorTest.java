@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by root on 16-7-3.
@@ -22,13 +23,14 @@ public class PangpangCodeGeneratorTest {
     private PangpangCodeGenerator pangpangCodeGenerator;
 
     @Test
-    public void getPrimaryKeys() throws Exception {
-        pangpangCodeGenerator.getPrimaryKeys("student2");
+    public void testGenerate(){
+        pangpangCodeGenerator.generate("student", "/usr/local/generate");
     }
 
     @Test
-    public void getSqlColumn() throws Exception {
-        pangpangCodeGenerator.getSqlColumn("student2");
+    public void testGetSqlColumnsInfo(){
+        List list = pangpangCodeGenerator.getSqlColumnsInfo("student");
+        System.out.println(list);
     }
 
     @Test
