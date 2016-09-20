@@ -2,6 +2,7 @@ package com.pangpang.util;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,18 +15,14 @@ import java.util.List;
  */
 public class DateUtil {
     public static void main(String[] args) {
-        List<String> list = new ArrayList<>();
-
-        list.add("1");
-        list.add("2");
-        list.add("3");
-        list.add("4");
-        for(int i=list.size()-1; i>= 0; i--){
-            System.out.println(i);
-        }
-
-        System.out.println(11);
+        System.out.println(yyyyMMddDateFormat.format(new Date()));
     }
+
+    public static FastDateFormat yyyyMMddDateFormat = FastDateFormat.getInstance("yyyy-MM-dd");
+    public static FastDateFormat yyyyMMddHHmmssDateFormat = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss");
+    public static FastDateFormat yyyyMMddHHmm00DateFormat = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:00");
+    public static FastDateFormat hhMMssTimeFormat = FastDateFormat.getInstance("HH:mm:ss");
+
     private static final String[] STANDARM_DATE_FORMAT = { "yyyy-MM-dd", "yyyy/MM/dd",
             "MM-dd","HH:mm","hh:mm","yyyy-MM-dd HH:mm",
             "yyyy-MM-dd'T'HH:mm:ss", "yyyy-MM-dd'T'hh:mm:ss",
@@ -145,4 +142,6 @@ public class DateUtil {
         }
         return date.getTime();
     }
+
+
 }

@@ -14,3 +14,30 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+
+out/
+target/
+.classpath
+.project
+.settings
+.externalToolBuilders
+bin/
+Thumbs.db
+classes
+*.eml
+*.userlibraries
+*.pid
+/do.sh
+*/catalina*
+log/
+*.log
+
+* text=auto
+
+# angularjs
+node_modules
+.sass-cache
+__ConfigTemp
+.bat
+*context.xml
