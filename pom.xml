@@ -9,6 +9,8 @@
         <module>pangpang-util</module>
         <module>pangpang-dao</module>
         <module>pangpang-springrest</module>
+        <module>pangpang-web</module>
+        <module>pangpang-web</module>
     </modules>
     <name>pangpang Maven Webapp</name>
     <url>http://maven.apache.org</url>

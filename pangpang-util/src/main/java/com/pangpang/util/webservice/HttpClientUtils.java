@@ -9,6 +9,7 @@ import org.apache.http.client.fluent.Request;
 import org.apache.http.client.fluent.Response;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.util.EntityUtils;
 
 import java.nio.charset.Charset;
 import java.util.List;
@@ -42,12 +43,12 @@ public class HttpClientUtils {
             Response response = Request.Post(url).body(httpEntity).execute();
             HttpResponse httpResponse = response.returnResponse();
             StatusLine status = httpResponse.getStatusLine();
-
+            HttpEntity httpEntityResponse = httpResponse.getEntity();
 
             if (status.getStatusCode() != 200) {
                 return new HttpClientResult(status.getStatusCode(), status.getReasonPhrase());
             } else {
-                return new HttpClientResult(200, "SUCCESS", response.returnContent().asString());
+                return new HttpClientResult(200, "SUCCESS", EntityUtils.toString(httpEntityResponse, Charset.forName("UTF-8")));
             }
         }catch (Exception ex){
             return new HttpClientResult(503, ExceptionUtils.getFullStackTrace(ex));

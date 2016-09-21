@@ -5,7 +5,8 @@ import org.apache.commons.collections.MapUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ import java.util.*;
  */
 @Service
 public class PangpangCodeGenerator {
-    Logger logger = Logger.getLogger(PangpangCodeGenerator.class);
+    private static final Logger logger = LoggerFactory.getLogger(PangpangCodeGenerator.class);
 
     //所有的类型
     private static Map<Integer, String> typeMap  = null;
