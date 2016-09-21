@@ -10,7 +10,6 @@
         <module>pangpang-dao</module>
         <module>pangpang-springrest</module>
         <module>pangpang-web</module>
-        <module>pangpang-web</module>
     </modules>
     <name>pangpang Maven Webapp</name>
     <url>http://maven.apache.org</url>
@@ -52,6 +51,18 @@
                 <version>${pangpang-version}</version>
             </dependency>
 
+            <!-- excel -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>3.10-FINAL</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>3.10-FINAL</version>
+            </dependency>
+
             <!--db-->
             <dependency>
                 <groupId>mysql</groupId>
@@ -84,21 +95,6 @@
                 <version>17.0</version>
             </dependency>
 
-            <dependency>
-                <groupId>commons-beanutils</groupId>
-                <artifactId>commons-beanutils</artifactId>
-                <version>1.8.3</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-beanutils</groupId>
-                <artifactId>commons-beanutils-core</artifactId>
-                <version>1.8.3</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-collections</groupId>
-                <artifactId>commons-collections</artifactId>
-                <version>3.2.1</version>
-            </dependency>
             <!-- dozer -->
             <dependency>
                 <groupId>net.sf.dozer</groupId>
@@ -454,6 +450,24 @@
                     <artifactId>google-collections</artifactId>
                     <version>1.0-rc2</version>
                 </dependency>
+
+                <dependency>
+                    <groupId>jstl</groupId>
+                    <artifactId>jstl</artifactId>
+                    <version>1.2</version>
+                </dependency>
+                <dependency>
+                    <groupId>taglibs</groupId>
+                    <artifactId>standard</artifactId>
+                    <version>1.1.2</version>
+                </dependency>
+                <!-- Open Flash Chart -->
+                <dependency>
+                    <groupId>jofc2</groupId>
+                    <artifactId>jofc2</artifactId>
+                    <version>1.0.1</version>
+                </dependency>
+
 
         </dependencies>
 
