@@ -145,7 +145,7 @@ public class IP {
                 String[] parts=line.split("\\|");
                 Area a=new Area(index,Short.parseShort(parts[0]),parts[1]);
                 metaIndex[index++]=a;
-                line=br.readLine();
+                //line=br.readLine();
             }
             br.close();
         }catch(Exception e){
@@ -321,7 +321,8 @@ public class IP {
     static void runTestForTime(List<Integer> ips, IpRBTree tree){
 
         for(Integer ip: ips){
-            tree.getNode(ip);
+            RBNode node = tree.getNode(ip);
+            System.out.println(node);
         }
         //long after=System.currentTimeMillis();
         //System.out.println(ips.size()+" times queries used:"+(after-before)+"ms");

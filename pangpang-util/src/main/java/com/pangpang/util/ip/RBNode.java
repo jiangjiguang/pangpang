@@ -10,6 +10,8 @@ public class RBNode {
     public static final byte RED = (byte)0;
     public static final byte BLACK = (byte)0x80;
     public static final int COLOR_MARK=0x80;
+
+
     RBNode parent;
     RBNode left;
     RBNode right;

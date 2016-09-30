@@ -12,6 +12,10 @@ import java.util.Iterator;
  */
 public class IpUtils {
 
+    public static void main(String[] args) {
+        System.out.println(ipToLong("1.1.63.255"));
+    }
+
     public static boolean startsWithAny(String str, Collection<String> prefixs) {
         Iterator<String> iter = prefixs.iterator();
         while (iter.hasNext()) {

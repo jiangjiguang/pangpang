@@ -3,6 +3,9 @@ package com.pangpang.util.ip.process;
 /**
  * Created by jiangjg on 2016/9/23.
  */
+/*
+用来表示IP地址每行信息中在Area中的索引的位置
+ */
 public class IpSegment {
     //byte[] segment;
     int from;

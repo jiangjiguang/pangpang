@@ -8,6 +8,8 @@ public class Area {
     public final static short REGION=2;
     public final static short CITY=4;
     public final static short COUNTY=8;
+
+
     int index;
     short type;//1 county1, 2 region, 4 city, 8 county2;
     String name;
