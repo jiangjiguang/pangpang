@@ -12,12 +12,11 @@
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
+            <groupId>pangpang</groupId>
+            <artifactId>pangpang-util</artifactId>
         </dependency>
     </dependencies>
+
     <build>
         <finalName>pangpang-web3</finalName>
     </build>
