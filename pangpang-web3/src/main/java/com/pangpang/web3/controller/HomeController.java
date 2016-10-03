@@ -1,10 +1,13 @@
 package com.pangpang.web3.controller;
 
+import com.pangpang.web3.domain.Spittle;
 import com.pangpang.web3.service.SpitterService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.inject.Inject;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,7 +26,14 @@ public class HomeController {
 
     @RequestMapping({"/","/home"})
     public String showHomePage(Map<String, Object> model){
+        System.out.println("1111111111111111111");
+        System.out.println(spitterService);
+        List<Spittle> expectedSpittles = Arrays.asList(new Spittle(), new Spittle(), new Spittle());
+
+
         model.put("spittles", spitterService.getRecentSplittles(DEFAULT_SPITTLES_PER_PAGE));
+        model.put("spittles", expectedSpittles);
+
         return "home";
     }
 
