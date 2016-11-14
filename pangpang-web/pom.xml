@@ -163,32 +163,6 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
-
-            <!-- tomcat7 -->
-            <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.0</version>
-                <configuration>
-                    <!-- http port -->
-                    <port>8080</port>
-                    <!-- application path always starts with /-->
-                    <path>/</path>
-                    <uriEncoding>utf-8</uriEncoding>
-                    <useTestClasspath>false</useTestClasspath>
-                    <!-- optionnal if you want to add some extra directories in the class loader -->
-                    <systemProperties>
-                        <JAVA_OPTS>-Xmx1024M -Xms1024M -XX:MaxPermSize=512M -XX:+CMSClassUnloadingEnabled -XX:+CMSPermGenSweepingEnabled</JAVA_OPTS>
-                    </systemProperties>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.ctrip.security</groupId>
-                        <artifactId>encryption</artifactId>
-                        <version>1.0.0.2</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
         </plugins>
         <finalName>${project.artifactId}</finalName>
     </build>
